@@ -29,6 +29,7 @@ func SetupRoutes() *fiber.App {
 	})
 
 	v1.Get("/provinces", services.GetProvinces)
+	v1.Get("/provinces/name/th", services.SearchProvincesByName)
 
 	v1.Get("/amphures", services.GetAmphures)
 	v1.Get("/amphures/province/:province_id", services.GetAmphuresByProvinceID)

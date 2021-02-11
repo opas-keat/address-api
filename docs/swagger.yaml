@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   models.Amphure:
     properties:
@@ -51,35 +52,19 @@ definitions:
         type: boolean
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
 paths:
-  /api/v1/amphures:
-    get:
-      consumes:
-      - application/json
-      description: Get all amphures
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.ResponseHTTP'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.Amphure'
-                  type: array
-              type: object
-        "503":
-          description: Service Unavailable
-          schema:
-            $ref: '#/definitions/models.ResponseHTTP'
-      summary: Get all amphures
-      tags:
-      - amphures
-  /api/v1/amphures/province/{province_id}:
+  /amphures/province/{province_id}:
     get:
       consumes:
       - application/json
@@ -115,33 +100,7 @@ paths:
       summary: Get all amphures by province_id
       tags:
       - amphures
-  /api/v1/districts:
-    get:
-      consumes:
-      - application/json
-      description: Get all districts
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/models.ResponseHTTP'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.District'
-                  type: array
-              type: object
-        "503":
-          description: Service Unavailable
-          schema:
-            $ref: '#/definitions/models.ResponseHTTP'
-      summary: Get all districts
-      tags:
-      - districts
-  /api/v1/districts/amphure/{amphure_id}:
+  /districts/amphure/{amphure_id}:
     get:
       consumes:
       - application/json
@@ -177,11 +136,42 @@ paths:
       summary: Get all districts by amphure_id
       tags:
       - districts
-  /api/v1/provinces:
+  /provinces:
     get:
       consumes:
       - application/json
       description: Get all provinces
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseHTTP'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Province'
+                  type: array
+              type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/models.ResponseHTTP'
+      summary: Get all provinces
+      tags:
+      - provinces
+  /provinces/name/th:
+    get:
+      consumes:
+      - application/json
+      description: Get all provinces
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        type: string
       produces:
       - application/json
       responses:

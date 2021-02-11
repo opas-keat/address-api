@@ -1,6 +1,9 @@
 package services
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
 	"omsoft.com/addressapi/database"
 	"omsoft.com/addressapi/models"
@@ -14,11 +17,17 @@ import (
 // @Produce json
 // @Success 200 {object} models.ResponseHTTP{data=[]models.Amphure}
 // @Failure 503 {object} models.ResponseHTTP{}
-// @Router /api/v1/amphures [get]
+// /amphures [get]
 func GetAmphures(c *fiber.Ctx) error {
 	db := database.DBConn
 	var amphures []models.Amphure
-	db.Find(&amphures)
+	if res := db.Find(&amphures); res.Error != nil {
+		return c.Status(http.StatusServiceUnavailable).JSON(models.ResponseHTTP{
+			Success: false,
+			Message: res.Error.Error(),
+			Data:    nil,
+		})
+	}
 	return c.JSON(models.ResponseHTTP{
 		Success: true,
 		Message: "Success get all amphures.",
@@ -36,12 +45,30 @@ func GetAmphures(c *fiber.Ctx) error {
 // @Success 200 {object} models.ResponseHTTP{data=[]models.Amphure}
 // @Failure 503 {object} models.ResponseHTTP{}
 // @Failure 404 {object} models.ResponseHTTP{}
-// @Router /api/v1/amphures/province/{province_id} [get]
+// @Router /amphures/province/{province_id} [get]
 func GetAmphuresByProvinceID(c *fiber.Ctx) error {
 	provinceID := c.Params("province_id", "0")
 	db := database.DBConn
 	var amphures []models.Amphure
-	db.Debug().Where("province_id = ?", provinceID).Find(&amphures)
+
+	if err := db.Where("province_id = ?", provinceID).Find(&amphures).Error; err != nil {
+		switch err.Error() {
+		case "record not found":
+			return c.Status(http.StatusNotFound).JSON(models.ResponseHTTP{
+				Success: false,
+				Message: fmt.Sprintf("Amphures with Province ID %v not found.", provinceID),
+				Data:    nil,
+			})
+		default:
+			return c.Status(http.StatusServiceUnavailable).JSON(models.ResponseHTTP{
+				Success: false,
+				Message: err.Error(),
+				Data:    nil,
+			})
+
+		}
+	}
+
 	return c.JSON(models.ResponseHTTP{
 		Success: true,
 		Message: "Success get all amphures data by province_id.",
