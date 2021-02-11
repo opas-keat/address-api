@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"omsoft.com/addressapi/database"
 )
@@ -19,10 +17,9 @@ type Province struct {
 
 //GetProvinces ..
 func GetProvinces(c *fiber.Ctx) error {
-	fmt.Println("GetProvinces")
 	db := database.DBConn
 	var provinces []Province
-	db.Unscoped().Find(&provinces)
+	db.Find(&provinces)
 	// for i, s := range provinces {
 	// 	fmt.Println(i, s.NameTh)
 	// }

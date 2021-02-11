@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"omsoft.com/addressapi/database"
 )
@@ -19,10 +17,21 @@ type Amphure struct {
 
 //GetAmphures ..
 func GetAmphures(c *fiber.Ctx) error {
-	fmt.Println("GetAmphures")
 	db := database.DBConn
 	var amphures []Amphure
-	db.Unscoped().Find(&amphures)
+	db.Find(&amphures)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success":  true,
+		"amphures": amphures,
+	})
+}
+
+//GetAmphuresByProvinceID ..
+func GetAmphuresByProvinceID(c *fiber.Ctx) error {
+	provinceID := c.Params("province_id", "0")
+	db := database.DBConn
+	var amphures []Amphure
+	db.Debug().Where("province_id = ?", provinceID).Find(&amphures)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"success":  true,
 		"amphures": amphures,

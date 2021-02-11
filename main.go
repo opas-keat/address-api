@@ -12,9 +12,15 @@ import (
 	"omsoft.com/addressapi/models"
 )
 
-// func setupRoutes(app *fiber.App) {
-// 	app.Get("/api/v1/provinces", province.GetProvinces)
-// }
+func setupRoutes(app *fiber.App) {
+	app.Get("/api/v1/provinces", models.GetProvinces)
+
+	app.Get("/api/v1/amphures", models.GetAmphures)
+	app.Get("/api/v1/amphures/province/:province_id", models.GetAmphuresByProvinceID)
+
+	app.Get("/api/v1/districts", models.GetDistricts)
+	app.Get("/api/v1/districts/amphure/:amphure_id", models.GetDistrictsByAmphureID)
+}
 
 func initDatabase() {
 	var err error
@@ -35,9 +41,7 @@ func main() {
 	app.Use(logger.New())
 
 	initDatabase()
-	// setupRoutes(app)
-
-	app.Get("/api/v1/provinces", models.GetProvinces)
+	setupRoutes(app)
 
 	err := app.Listen(":3000")
 

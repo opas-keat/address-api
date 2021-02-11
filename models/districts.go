@@ -1,13 +1,11 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"omsoft.com/addressapi/database"
 )
 
-//Districts ..
+//District ...
 type District struct {
 	// gorm.Model
 	ID        int    `json:"id"`
@@ -19,13 +17,21 @@ type District struct {
 
 //GetDistricts ..
 func GetDistricts(c *fiber.Ctx) error {
-	fmt.Println("GetDistricts")
 	db := database.DBConn
 	var districts []District
-	db.Unscoped().Find(&districts)
-	// for i, s := range provinces {
-	// 	fmt.Println(i, s.NameTh)
-	// }
+	db.Find(&districts)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success":   true,
+		"districts": districts,
+	})
+}
+
+//GetDistrictsByAmphureID ..
+func GetDistrictsByAmphureID(c *fiber.Ctx) error {
+	amphureID := c.Params("amphure_id", "0")
+	db := database.DBConn
+	var districts []District
+	db.Debug().Where("amphure_id = ?", amphureID).Find(&districts)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"success":   true,
 		"districts": districts,
