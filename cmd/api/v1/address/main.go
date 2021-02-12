@@ -4,7 +4,6 @@ import (
 	_ "github.com/opas-keat/addressapi/cmd/api/v1/address/docs"
 
 	"github.com/opas-keat/addressapi/cmd/api/v1/address/handlers"
-	"github.com/opas-keat/addressapi/database"
 )
 
 // @title Swagger Example API
@@ -22,7 +21,7 @@ import (
 // @BasePath /api/v1
 // @query.collection.format multi
 func main() {
-	database.Connect()
+	// database.Connect()
 	// database.InitGeographie()
 	// database.InitProvince()
 	// database.InitAmphure()

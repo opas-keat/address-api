@@ -10,11 +10,13 @@ WORKDIR /build
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
+# RUN ls
 # Copy the code into the container
-COPY cmd/ /cmd/
-COPY database/ /database/
+ADD cmd/ cmd/
+ADD database/ database/
+ADD env.yaml env.yaml
 # Build the application
-RUN go build -o main .
+RUN go build -o main cmd/api/v1/address/main.go
 
 FROM alpine:latest
 # Move to /dist directory as the place for resulting binary folder
