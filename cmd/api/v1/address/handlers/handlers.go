@@ -3,14 +3,16 @@ package handlers
 import (
 	"fmt"
 
+	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/opas-keat/addressapi/cmd/api/v1/address/service"
 	"github.com/spf13/viper"
 )
 
 // API constructs an http.Handler with all application routes defined.
-func API() *fiber.App {
+func API() {
 	viper.SetConfigName("env")
 	viper.AddConfigPath(".")
 	viper.AutomaticEnv()
@@ -29,10 +31,35 @@ func API() *fiber.App {
 		TimeZone:   "Asia/Jakarta",
 	}))
 
+	app.Get("/docs/*", swagger.Handler)
+
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.JSON(fiber.Map{
+			"message": "🐣 Address API.",
+		})
 	})
 
-	app.Listen(port)
-	return app
+	api := app.Group("/api")
+	v1 := api.Group("/v1", func(c *fiber.Ctx) error {
+		c.JSON(fiber.Map{
+			"message": "🐣 v1",
+		})
+		return c.Next()
+	})
+
+	v1.Post("/geographies/init", service.InitGeographie)
+
+	v1.Get("/provinces", service.GetProvinces)
+	v1.Get("/provinces/name/th", service.SearchProvincesByName)
+
+	v1.Get("/amphures", service.GetAmphures)
+	v1.Get("/amphures/province/:province_id", service.GetAmphuresByProvinceID)
+
+	v1.Get("/districts", service.GetDistricts)
+	v1.Get("/districts/amphure/:amphure_id", service.GetDistrictsByAmphureID)
+
+	err = app.Listen(port)
+	if err != nil {
+		panic(err)
+	}
 }

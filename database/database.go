@@ -70,121 +70,136 @@ func Connect() error {
 
 // InitGeographie function
 func InitGeographie() error {
-	file, err := os.Open("database/script/geographies.csv")
-	if err != nil {
-		log.Fatalf("failed to open")
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	var geographiers []model.Geographie
-	for scanner.Scan() {
-		geographier := model.Geographie{
-			ID:   0,
-			Name: scanner.Text(),
+	var geo model.Geographie
+	result := DBConn.First(&geo)
+	if result.RowsAffected == 0 {
+		file, err := os.Open("database/script/geographies.csv")
+		if err != nil {
+			log.Fatalf("failed to open")
 		}
-		geographiers = append(geographiers, geographier)
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanLines)
+
+		var geographiers []model.Geographie
+		for scanner.Scan() {
+			geographier := model.Geographie{
+				ID:   0,
+				Name: scanner.Text(),
+			}
+			geographiers = append(geographiers, geographier)
+		}
+		DBConn.Select("Name").Create(&geographiers)
 	}
-	DBConn.Select("Name").Create(&geographiers)
 	return nil
 }
 
 // InitProvince function
 func InitProvince() error {
-	file, err := os.Open("database/script/provinces.csv")
-	if err != nil {
-		log.Fatalf("failed to open")
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	var provinces []model.Province
-
-	for scanner.Scan() {
-		s := strings.Split(scanner.Text(), ",")
-		geographyID, err := strconv.Atoi(s[3])
+	var prov model.Province
+	result := DBConn.First(&prov)
+	if result.RowsAffected == 0 {
+		file, err := os.Open("database/script/provinces.csv")
 		if err != nil {
-			log.Fatalf("strconv error")
+			log.Fatalf("failed to open")
 		}
-		province := model.Province{
-			ID:          0,
-			Code:        s[0],
-			NameTh:      s[1],
-			NameEn:      s[2],
-			GeographyID: geographyID,
-		}
-		provinces = append(provinces, province)
-	}
+		defer file.Close()
 
-	DBConn.Select("Code", "NameTh", "NameEn", "GeographyID").Create(&provinces)
+		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanLines)
+
+		var provinces []model.Province
+
+		for scanner.Scan() {
+			s := strings.Split(scanner.Text(), ",")
+			geographyID, err := strconv.Atoi(s[3])
+			if err != nil {
+				log.Fatalf("strconv error")
+			}
+			province := model.Province{
+				ID:          0,
+				Code:        s[0],
+				NameTh:      s[1],
+				NameEn:      s[2],
+				GeographyID: geographyID,
+			}
+			provinces = append(provinces, province)
+		}
+		DBConn.Select("Code", "NameTh", "NameEn", "GeographyID").Create(&provinces)
+	}
 	return nil
 }
 
 // InitAmphure function
 func InitAmphure() error {
-	file, err := os.Open("database/script/amphures.csv")
-	if err != nil {
-		log.Fatalf("failed to open")
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	var amphures []model.Amphure
-	for scanner.Scan() {
-		s := strings.Split(scanner.Text(), ",")
-		provinceID, err := strconv.Atoi(s[3])
+	var amp model.Amphure
+	result := DBConn.First(&amp)
+	if result.RowsAffected == 0 {
+		file, err := os.Open("database/script/amphures.csv")
 		if err != nil {
-			log.Fatalf("strconv error")
+			log.Fatalf("failed to open")
 		}
-		amphure := model.Amphure{
-			ID:         0,
-			Code:       s[0],
-			NameTh:     s[1],
-			NameEn:     s[2],
-			ProvinceID: provinceID,
-		}
-		amphures = append(amphures, amphure)
-	}
+		defer file.Close()
 
-	DBConn.Select("Code", "NameTh", "NameEn", "ProvinceID").Create(&amphures)
+		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanLines)
+
+		var amphures []model.Amphure
+		for scanner.Scan() {
+			s := strings.Split(scanner.Text(), ",")
+			provinceID, err := strconv.Atoi(s[3])
+			if err != nil {
+				log.Fatalf("strconv error")
+			}
+			amphure := model.Amphure{
+				ID:         0,
+				Code:       s[0],
+				NameTh:     s[1],
+				NameEn:     s[2],
+				ProvinceID: provinceID,
+			}
+			amphures = append(amphures, amphure)
+		}
+
+		DBConn.Select("Code", "NameTh", "NameEn", "ProvinceID").Create(&amphures)
+	}
 	return nil
 }
 
 // InitDistrict function
 func InitDistrict() error {
-	file, err := os.Open("database/script/districts.csv")
-	if err != nil {
-		log.Fatalf("failed to open")
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	var districts []model.District
-	for scanner.Scan() {
-		s := strings.Split(scanner.Text(), ",")
-		zipCode, err := strconv.Atoi(s[0])
-		amphureID, err := strconv.Atoi(s[3])
+	var dis model.District
+	result := DBConn.First(&dis)
+	if result.RowsAffected == 0 {
+		file, err := os.Open("database/script/districts.csv")
 		if err != nil {
-			log.Fatalf("strconv error")
+			log.Fatalf("failed to open")
 		}
-		district := model.District{
-			ID:        0,
-			ZipCode:   zipCode,
-			NameTh:    s[1],
-			NameEn:    s[2],
-			AmphureID: amphureID,
-		}
-		districts = append(districts, district)
-	}
+		defer file.Close()
 
-	DBConn.Select("ZipCode", "NameTh", "NameEn", "AmphureID").Create(&districts)
+		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanLines)
+
+		var districts []model.District
+		for scanner.Scan() {
+			s := strings.Split(scanner.Text(), ",")
+			zipCode, err := strconv.Atoi(s[0])
+			amphureID, err := strconv.Atoi(s[3])
+			if err != nil {
+				log.Fatalf("strconv error")
+			}
+			district := model.District{
+				ID:        0,
+				ZipCode:   zipCode,
+				NameTh:    s[1],
+				NameEn:    s[2],
+				AmphureID: amphureID,
+			}
+			districts = append(districts, district)
+		}
+
+		DBConn.Select("ZipCode", "NameTh", "NameEn", "AmphureID").Create(&districts)
+	}
 	return nil
 }
