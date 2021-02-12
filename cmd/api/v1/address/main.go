@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/opas-keat/addressapi"
+	"github.com/opas-keat/addressapi/database"
 )
 
 func main() {
-	fmt.Println(addressapi.Config())
+	database.Connect()
+	// fmt.Println(addressapi.Config.User)
 }
