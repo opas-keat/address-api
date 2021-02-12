@@ -6,5 +6,8 @@ import (
 
 func main() {
 	database.Connect()
-	// fmt.Println(addressapi.Config.User)
+	// database.InitGeographie()
+	// database.InitProvince()
+	// database.InitAmphure()
+	// database.InitDistrict()
 }
