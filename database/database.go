@@ -11,7 +11,7 @@ import (
 var (
 	//DBConn ..
 	DBConn   *gorm.DB
-	host     = "localhost"
+	host     = "host.docker.internal"
 	port     = "5432" // Default port
 	dbname   = "postgres"
 	user     = "postgres"
