@@ -23,7 +23,6 @@ func Connect() error {
 	var err error
 
 	dsn := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=disable", host, port, dbname, user, password)
-	// dsn := "host="+host+" user=postgres password=P@ssw0rd dbname=postgres port="+port+" sslmode=disable TimeZone=Asia/Shanghai"
 	DBConn, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		PrepareStmt: true,
 	})
