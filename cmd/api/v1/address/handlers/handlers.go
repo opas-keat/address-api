@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/opas-keat/addressapi/cmd/api/v1/address/service"
+	"github.com/opas-keat/addressapi/database"
 	"github.com/spf13/viper"
 )
 
@@ -46,6 +47,8 @@ func API() {
 		})
 		return c.Next()
 	})
+
+	v1.Get("/connect", database.Connect)
 
 	v1.Post("/geographies/init", service.InitGeographie)
 

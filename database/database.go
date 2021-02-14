@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/opas-keat/addressapi/cmd/api/v1/address/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
@@ -26,7 +27,7 @@ var (
 )
 
 // Connect function
-func Connect() error {
+func Connect(c *fiber.Ctx) error {
 	viper.SetConfigName("env")
 	viper.AddConfigPath(".")
 	viper.AutomaticEnv()

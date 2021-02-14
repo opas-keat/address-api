@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:13.1
+    container_name: pgsql-server
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: P@ssw0rd
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+ 
+  pgadmin:
+    image: dpage/pgadmin4:4.30
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - "db:pgsql-server"
+
+volumes:
+  db-data:
+  pgadmin-data:
