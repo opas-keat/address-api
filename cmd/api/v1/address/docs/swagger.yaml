@@ -1,6 +1,6 @@
 basePath: /api/v1
 definitions:
-  models.Amphure:
+  model.Amphure:
     properties:
       code:
         type: string
@@ -14,7 +14,7 @@ definitions:
       province_id:
         type: integer
     type: object
-  models.District:
+  model.District:
     properties:
       amphure_id:
         type: integer
@@ -27,22 +27,20 @@ definitions:
       zip_code:
         type: integer
     type: object
-  models.Province:
+  model.Province:
     properties:
       code:
         type: string
       geography_id:
         type: integer
       id:
-        description: gorm.Model
         type: integer
       name_en:
         type: string
       name_th:
-        example: Bangkok
         type: string
     type: object
-  models.ResponseHTTP:
+  model.ResponseHTTP:
     properties:
       data:
         type: object
@@ -64,6 +62,25 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /amphures/init:
+    post:
+      consumes:
+      - application/json
+      description: create init amphure
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init amphure
+      tags:
+      - amphures
   /amphures/province/{province_id}:
     get:
       consumes:
@@ -82,21 +99,21 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/models.ResponseHTTP'
+            - $ref: '#/definitions/model.ResponseHTTP'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Amphure'
+                    $ref: '#/definitions/model.Amphure'
                   type: array
               type: object
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.ResponseHTTP'
+            $ref: '#/definitions/model.ResponseHTTP'
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/models.ResponseHTTP'
+            $ref: '#/definitions/model.ResponseHTTP'
       summary: Get all amphures by province_id
       tags:
       - amphures
@@ -118,24 +135,62 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/models.ResponseHTTP'
+            - $ref: '#/definitions/model.ResponseHTTP'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.District'
+                    $ref: '#/definitions/model.District'
                   type: array
               type: object
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/models.ResponseHTTP'
+            $ref: '#/definitions/model.ResponseHTTP'
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/models.ResponseHTTP'
+            $ref: '#/definitions/model.ResponseHTTP'
       summary: Get all districts by amphure_id
       tags:
       - districts
+  /districts/init:
+    post:
+      consumes:
+      - application/json
+      description: create init district
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init district
+      tags:
+      - districts
+  /geographies/init:
+    post:
+      consumes:
+      - application/json
+      description: create init geographie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init geographie
+      tags:
+      - geographies
   /provinces:
     get:
       consumes:
@@ -148,18 +203,37 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/models.ResponseHTTP'
+            - $ref: '#/definitions/model.ResponseHTTP'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Province'
+                    $ref: '#/definitions/model.Province'
                   type: array
               type: object
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/models.ResponseHTTP'
+            $ref: '#/definitions/model.ResponseHTTP'
       summary: Get all provinces
+      tags:
+      - provinces
+  /provinces/init:
+    post:
+      consumes:
+      - application/json
+      description: create init province
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init province
       tags:
       - provinces
   /provinces/name/th:
@@ -179,17 +253,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/models.ResponseHTTP'
+            - $ref: '#/definitions/model.ResponseHTTP'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Province'
+                    $ref: '#/definitions/model.Province'
                   type: array
               type: object
         "503":
           description: Service Unavailable
           schema:
-            $ref: '#/definitions/models.ResponseHTTP'
+            $ref: '#/definitions/model.ResponseHTTP'
       summary: Get all provinces
       tags:
       - provinces

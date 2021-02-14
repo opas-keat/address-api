@@ -1,13 +1,30 @@
-package services
+package service
 
 import (
 	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
-	"omsoft.com/addressapi/database"
-	"omsoft.com/addressapi/models"
+	"github.com/opas-keat/addressapi/cmd/api/v1/address/model"
+	"github.com/opas-keat/addressapi/database"
 )
+
+// InitDistrict is a function to create init district data to database
+// @Summary create init district
+// @Description create init district
+// @Tags districts
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.ResponseHTTP{}
+// @Failure 503 {object} model.ResponseHTTP{}
+// @Router /districts/init [post]
+func InitDistrict(c *fiber.Ctx) error {
+	database.InitDistrict()
+	return c.JSON(model.ResponseHTTP{
+		Success: true,
+		Message: "Success init district.",
+	})
+}
 
 // GetDistricts is a function to get all districts data from database
 // @Summary Get all districts
@@ -15,20 +32,20 @@ import (
 // @Tags districts
 // @Accept json
 // @Produce json
-// @Success 200 {object} models.ResponseHTTP{data=[]models.District}
-// @Failure 503 {object} models.ResponseHTTP{}
+// @Success 200 {object} model.ResponseHTTP{data=[]model.District}
+// @Failure 503 {object} model.ResponseHTTP{}
 // //districts [get]
 func GetDistricts(c *fiber.Ctx) error {
 	db := database.DBConn
-	var districts []models.District
+	var districts []model.District
 	if res := db.Find(&districts); res.Error != nil {
-		return c.Status(http.StatusServiceUnavailable).JSON(models.ResponseHTTP{
+		return c.Status(http.StatusServiceUnavailable).JSON(model.ResponseHTTP{
 			Success: false,
 			Message: res.Error.Error(),
 			Data:    nil,
 		})
 	}
-	return c.JSON(models.ResponseHTTP{
+	return c.JSON(model.ResponseHTTP{
 		Success: true,
 		Message: "Success get all districts.",
 		Data:    districts,
@@ -42,24 +59,24 @@ func GetDistricts(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param amphure_id path int true "Amphure ID"
-// @Success 200 {object} models.ResponseHTTP{data=[]models.District}
-// @Failure 503 {object} models.ResponseHTTP{}
-// @Failure 404 {object} models.ResponseHTTP{}
+// @Success 200 {object} model.ResponseHTTP{data=[]model.District}
+// @Failure 503 {object} model.ResponseHTTP{}
+// @Failure 404 {object} model.ResponseHTTP{}
 // @Router /districts/amphure/{amphure_id} [get]
 func GetDistrictsByAmphureID(c *fiber.Ctx) error {
 	amphureID := c.Params("amphure_id", "0")
 	db := database.DBConn
-	var districts []models.District
+	var districts []model.District
 	if err := db.Where("amphure_id = ?", amphureID).Find(&districts).Error; err != nil {
 		switch err.Error() {
 		case "record not found":
-			return c.Status(http.StatusNotFound).JSON(models.ResponseHTTP{
+			return c.Status(http.StatusNotFound).JSON(model.ResponseHTTP{
 				Success: false,
 				Message: fmt.Sprintf("Districts with Amphure ID %v not found.", amphureID),
 				Data:    nil,
 			})
 		default:
-			return c.Status(http.StatusServiceUnavailable).JSON(models.ResponseHTTP{
+			return c.Status(http.StatusServiceUnavailable).JSON(model.ResponseHTTP{
 				Success: false,
 				Message: err.Error(),
 				Data:    nil,
@@ -67,7 +84,7 @@ func GetDistrictsByAmphureID(c *fiber.Ctx) error {
 
 		}
 	}
-	return c.JSON(models.ResponseHTTP{
+	return c.JSON(model.ResponseHTTP{
 		Success: true,
 		Message: "Success get all districts.",
 		Data:    districts,

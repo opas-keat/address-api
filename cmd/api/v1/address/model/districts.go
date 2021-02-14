@@ -1,4 +1,4 @@
-package models
+package model
 
 //District is a model for district
 type District struct {

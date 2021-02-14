@@ -1,4 +1,4 @@
-package models
+package model
 
 //Amphure is a model for amphure
 type Amphure struct {

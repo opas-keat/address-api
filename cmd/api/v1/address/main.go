@@ -1,12 +1,10 @@
 package main
 
 import (
-	"log"
+	_ "github.com/opas-keat/addressapi/cmd/api/v1/address/docs"
+	"github.com/opas-keat/addressapi/database"
 
-	_ "omsoft.com/addressapi/docs"
-
-	"omsoft.com/addressapi/database"
-	"omsoft.com/addressapi/routes"
+	"github.com/opas-keat/addressapi/cmd/api/v1/address/handlers"
 )
 
 // @title Swagger Example API
@@ -24,15 +22,10 @@ import (
 // @BasePath /api/v1
 // @query.collection.format multi
 func main() {
-
-	if err := database.Connect(); err != nil {
-		log.Panic("Can't connect database:", err.Error())
-	}
-
-	app := routes.SetupRoutes()
-	err := app.Listen(":3000")
-
-	if err != nil {
-		panic(err)
-	}
+	database.Connect()
+	// database.InitGeographie()
+	// database.InitProvince()
+	// database.InitAmphure()
+	// database.InitDistrict()
+	handlers.API()
 }

@@ -33,6 +33,35 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/amphures/init": {
+            "post": {
+                "description": "create init amphure",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "amphures"
+                ],
+                "summary": "create init amphure",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
         "/amphures/province/{province_id}": {
             "get": {
                 "description": "Get all amphures by province_id",
@@ -61,7 +90,7 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/models.ResponseHTTP"
+                                    "$ref": "#/definitions/model.ResponseHTTP"
                                 },
                                 {
                                     "type": "object",
@@ -69,7 +98,7 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Amphure"
+                                                "$ref": "#/definitions/model.Amphure"
                                             }
                                         }
                                     }
@@ -80,13 +109,13 @@ var doc = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseHTTP"
+                            "$ref": "#/definitions/model.ResponseHTTP"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseHTTP"
+                            "$ref": "#/definitions/model.ResponseHTTP"
                         }
                     }
                 }
@@ -120,7 +149,7 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/models.ResponseHTTP"
+                                    "$ref": "#/definitions/model.ResponseHTTP"
                                 },
                                 {
                                     "type": "object",
@@ -128,7 +157,7 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.District"
+                                                "$ref": "#/definitions/model.District"
                                             }
                                         }
                                     }
@@ -139,13 +168,71 @@ var doc = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseHTTP"
+                            "$ref": "#/definitions/model.ResponseHTTP"
                         }
                     },
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseHTTP"
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/districts/init": {
+            "post": {
+                "description": "create init district",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "districts"
+                ],
+                "summary": "create init district",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/geographies/init": {
+            "post": {
+                "description": "create init geographie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "geographies"
+                ],
+                "summary": "create init geographie",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
                         }
                     }
                 }
@@ -170,7 +257,7 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/models.ResponseHTTP"
+                                    "$ref": "#/definitions/model.ResponseHTTP"
                                 },
                                 {
                                     "type": "object",
@@ -178,7 +265,7 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Province"
+                                                "$ref": "#/definitions/model.Province"
                                             }
                                         }
                                     }
@@ -189,7 +276,36 @@ var doc = `{
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseHTTP"
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    }
+                }
+            }
+        },
+        "/provinces/init": {
+            "post": {
+                "description": "create init province",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "provinces"
+                ],
+                "summary": "create init province",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResponseHTTP"
                         }
                     }
                 }
@@ -222,7 +338,7 @@ var doc = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/models.ResponseHTTP"
+                                    "$ref": "#/definitions/model.ResponseHTTP"
                                 },
                                 {
                                     "type": "object",
@@ -230,7 +346,7 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Province"
+                                                "$ref": "#/definitions/model.Province"
                                             }
                                         }
                                     }
@@ -241,7 +357,7 @@ var doc = `{
                     "503": {
                         "description": "Service Unavailable",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponseHTTP"
+                            "$ref": "#/definitions/model.ResponseHTTP"
                         }
                     }
                 }
@@ -249,7 +365,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "models.Amphure": {
+        "model.Amphure": {
             "type": "object",
             "properties": {
                 "code": {
@@ -270,7 +386,7 @@ var doc = `{
                 }
             }
         },
-        "models.District": {
+        "model.District": {
             "type": "object",
             "properties": {
                 "amphure_id": {
@@ -290,7 +406,7 @@ var doc = `{
                 }
             }
         },
-        "models.Province": {
+        "model.Province": {
             "type": "object",
             "properties": {
                 "code": {
@@ -300,19 +416,17 @@ var doc = `{
                     "type": "integer"
                 },
                 "id": {
-                    "description": "gorm.Model",
                     "type": "integer"
                 },
                 "name_en": {
                     "type": "string"
                 },
                 "name_th": {
-                    "type": "string",
-                    "example": "Bangkok"
+                    "type": "string"
                 }
             }
         },
-        "models.ResponseHTTP": {
+        "model.ResponseHTTP": {
             "type": "object",
             "properties": {
                 "data": {

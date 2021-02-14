@@ -1,4 +1,4 @@
-package models
+package model
 
 // ResponseHTTP represents response body of this API
 type ResponseHTTP struct {
