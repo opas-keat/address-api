@@ -9,6 +9,23 @@ import (
 	"github.com/opas-keat/addressapi/database"
 )
 
+// InitAmphure is a function to create init amphure data to database
+// @Summary create init amphure
+// @Description create init amphure
+// @Tags amphures
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.ResponseHTTP{}
+// @Failure 503 {object} model.ResponseHTTP{}
+// @Router /amphures/init [post]
+func InitAmphure(c *fiber.Ctx) error {
+	database.InitAmphure()
+	return c.JSON(model.ResponseHTTP{
+		Success: true,
+		Message: "Success init amphure.",
+	})
+}
+
 // GetAmphures is a function to get all amphures data from database
 // @Summary Get all amphures
 // @Description Get all amphures

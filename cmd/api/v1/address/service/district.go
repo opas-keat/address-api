@@ -9,6 +9,23 @@ import (
 	"github.com/opas-keat/addressapi/database"
 )
 
+// InitDistrict is a function to create init district data to database
+// @Summary create init district
+// @Description create init district
+// @Tags districts
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.ResponseHTTP{}
+// @Failure 503 {object} model.ResponseHTTP{}
+// @Router /districts/init [post]
+func InitDistrict(c *fiber.Ctx) error {
+	database.InitDistrict()
+	return c.JSON(model.ResponseHTTP{
+		Success: true,
+		Message: "Success init district.",
+	})
+}
+
 // GetDistricts is a function to get all districts data from database
 // @Summary Get all districts
 // @Description Get all districts

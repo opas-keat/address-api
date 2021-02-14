@@ -62,6 +62,25 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /amphures/init:
+    post:
+      consumes:
+      - application/json
+      description: create init amphure
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init amphure
+      tags:
+      - amphures
   /amphures/province/{province_id}:
     get:
       consumes:
@@ -134,6 +153,25 @@ paths:
       summary: Get all districts by amphure_id
       tags:
       - districts
+  /districts/init:
+    post:
+      consumes:
+      - application/json
+      description: create init district
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init district
+      tags:
+      - districts
   /geographies/init:
     post:
       consumes:
@@ -177,6 +215,25 @@ paths:
           schema:
             $ref: '#/definitions/model.ResponseHTTP'
       summary: Get all provinces
+      tags:
+      - provinces
+  /provinces/init:
+    post:
+      consumes:
+      - application/json
+      description: create init province
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/model.ResponseHTTP'
+      summary: create init province
       tags:
       - provinces
   /provinces/name/th:

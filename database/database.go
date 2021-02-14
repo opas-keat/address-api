@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/opas-keat/addressapi/cmd/api/v1/address/model"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
@@ -26,8 +25,8 @@ var (
 	password = "P@ssw0rd"
 )
 
-// Connect function
-func Connect(c *fiber.Ctx) error {
+// Connect is a function to connect to database
+func Connect() error {
 	viper.SetConfigName("env")
 	viper.AddConfigPath(".")
 	viper.AutomaticEnv()

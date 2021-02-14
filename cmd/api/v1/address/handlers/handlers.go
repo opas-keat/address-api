@@ -8,7 +8,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/opas-keat/addressapi/cmd/api/v1/address/service"
-	"github.com/opas-keat/addressapi/database"
 	"github.com/spf13/viper"
 )
 
@@ -48,16 +47,17 @@ func API() {
 		return c.Next()
 	})
 
-	v1.Get("/connect", database.Connect)
-
 	v1.Post("/geographies/init", service.InitGeographie)
 
+	v1.Post("/provinces/init", service.InitProvince)
 	v1.Get("/provinces", service.GetProvinces)
 	v1.Get("/provinces/name/th", service.SearchProvincesByName)
 
+	v1.Post("/amphures/init", service.InitAmphure)
 	v1.Get("/amphures", service.GetAmphures)
 	v1.Get("/amphures/province/:province_id", service.GetAmphuresByProvinceID)
 
+	v1.Post("/districts/init", service.InitDistrict)
 	v1.Get("/districts", service.GetDistricts)
 	v1.Get("/districts/amphure/:amphure_id", service.GetDistrictsByAmphureID)
 

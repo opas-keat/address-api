@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "github.com/opas-keat/addressapi/cmd/api/v1/address/docs"
+	"github.com/opas-keat/addressapi/database"
 
 	"github.com/opas-keat/addressapi/cmd/api/v1/address/handlers"
 )
@@ -21,7 +22,7 @@ import (
 // @BasePath /api/v1
 // @query.collection.format multi
 func main() {
-	// database.Connect()
+	database.Connect()
 	// database.InitGeographie()
 	// database.InitProvince()
 	// database.InitAmphure()

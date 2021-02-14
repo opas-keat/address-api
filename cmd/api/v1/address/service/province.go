@@ -8,6 +8,23 @@ import (
 	"github.com/opas-keat/addressapi/database"
 )
 
+// InitProvince is a function to create init province data to database
+// @Summary create init province
+// @Description create init province
+// @Tags provinces
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.ResponseHTTP{}
+// @Failure 503 {object} model.ResponseHTTP{}
+// @Router /provinces/init [post]
+func InitProvince(c *fiber.Ctx) error {
+	database.InitProvince()
+	return c.JSON(model.ResponseHTTP{
+		Success: true,
+		Message: "Success init province.",
+	})
+}
+
 // GetProvinces is a function to get all provinces data from database
 // @Summary Get all provinces
 // @Description Get all provinces
