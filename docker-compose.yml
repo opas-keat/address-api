@@ -3,32 +3,41 @@ version: "3.7"
 services:
   db:
     image: postgres:13.1
-    container_name: pgsql-server
+    container_name: postgres_container
     restart: always
+    command: postgres -c 'max_connections=300' -c 'shared_buffers=1GB'
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: P@ssw0rd
-      PGDATA: /var/lib/postgresql/data
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-P@ssw0rd}
+      PGDATA: /data/addressapi
     volumes:
-      - ./dbdata:/var/lib/postgresql/data
+      - postgres-data:/data/addressapi
     ports:
       - "5432:5432"
+    networks:
+      - address-api
  
   pgadmin:
+    container_name: pgadmin_container
     image: dpage/pgadmin4:4.30
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@postgres.com
-      PGADMIN_DEFAULT_PASSWORD: P@ssw0rd
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-P@ssw0rd}
       PGADMIN_LISTEN_PORT: 5050
     ports:
-      - "5050:5050"
+      - "${PGADMIN_PORT:-5050}:5050"
+    networks:
+      - address-api
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - pgadmin:/root/.pgadmin
     links:
-      - "db:pgsql-server"
+      - "db:postgres_container"
+
+networks:
+  address-api:
+    driver: bridge
 
 volumes:
-  db-data:
-  pgadmin-data:
+  postgres-data:
+  pgadmin:
