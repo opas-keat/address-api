@@ -62,3 +62,7 @@ services:
 networks:
   addressapi:
     driver: bridge
+
+volumes:
+  postgres-data:
+  pgadmin:
