@@ -1,6 +1,7 @@
 version: "3.7"
 
 services:
+
   db:
     image: postgres:13.1
     container_name: postgres_container
@@ -15,7 +16,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - address-api
+      - addressapi
  
   pgadmin:
     container_name: pgadmin_container
@@ -28,14 +29,38 @@ services:
     ports:
       - "${PGADMIN_PORT:-5050}:5050"
     networks:
-      - address-api
+      - addressapi
     volumes:
       - pgadmin:/root/.pgadmin
     links:
       - "db:postgres_container"
 
+  api:
+    build: .
+    ports:
+      - 3000
+    restart: always
+    deploy:
+      replicas: 2
+    networks:
+      - addressapi
+
+  web:
+    build:
+      context: ./nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - api
+    links:
+      - api
+    networks:
+      - addressapi
+
 networks:
-  address-api:
+  addressapi:
     driver: bridge
 
 volumes:
