@@ -59,7 +59,7 @@ func Connect() error {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	DBConn.AutoMigrate(
-		&model.Geographie{},
+		model.Geographie{},
 		&model.Province{},
 		&model.Amphure{},
 		&model.District{},
